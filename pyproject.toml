@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["shnet*"]
+
+[project]
+name = "shnet"
+version = "0.1.0"
+description = "An advanced neural network library built from scratch"
+authors = [{name = "Shhaurya Jaiswal"}]
+readme = "README.md"
+requires-python = ">=3.8"
+
+dependencies = [
+    "numpy"
+]
+
+license = {text = "MIT"}
+
+keywords = ["deep learning", "neural network", "machine learning", "from scratch"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
