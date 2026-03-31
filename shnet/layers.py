@@ -47,8 +47,9 @@ class Linear(Layers):
         ## inputs will be (batch_size, input_size)
         ## outputs will be (batch_size, output_size)
         super().__init__()
-        self.params["w"] = np.random.randn(input_size, output_size)
-        self.params["b"] = np.random.randn(output_size)
+        limit = np.sqrt(2 / input_size)
+        self.params["w"] = np.random.randn(input_size, output_size) * limit
+        self.params["b"] = np.zeros(output_size)
 
     def forward(self, inputs :Tensor) -> Tensor:
         """
@@ -108,6 +109,147 @@ def tanh_prime(x: Tensor) -> Tensor:
     y = np.tanh(x)
     return 1 - y ** 2
 
+def relu(x:Tensor) -> Tensor:
+    return np.maximum(0, x)
+
+def relu_prime(x: Tensor) -> Tensor:
+    return (x > 0).astype(float)
+
+def softmax(x: Tensor) -> Tensor:
+    exp = np.exp(x - np.max(x, axis=1, keepdims=True))
+    return exp / np.sum(exp, axis=1, keepdims=True)
+
 class Tanh(Activation):
+    """
+    Tanh activation:
+
+    f(x) = tanh(x)
+
+    ---
+
+    Derivative:
+
+    f'(x) = 1 - tanh(x)^2
+
+    ---
+
+    Backprop:
+
+    dL/dx = dL/dy * (1 - tanh(x)^2)
+
+    ---
+
+    Range:
+
+    -1 <= tanh(x) <= 1
+
+    ---
+
+    Interpretation:
+
+    - smooth non-linearity
+    - but can suffer from vanishing gradients
+    """
     def __init__(self):
         super().__init__(tanh, tanh_prime)
+
+class ReLU(Activation):
+    """
+    ReLU activation:
+
+    f(x) = max(0, x)
+
+    ---
+
+    Derivative:
+
+    f'(x) = 1  if x > 0
+            0  if x <= 0
+
+    ---
+
+    Backprop:
+
+    dL/dx = dL/dy * f'(x)
+
+    ---
+
+    Interpretation:
+
+    - positive inputs → pass gradient
+    - negative inputs → block gradient
+
+    ---
+
+    Effect:
+
+    - introduces non-linearity
+    - avoids vanishing gradient (better than tanh/sigmoid)
+
+    ---
+
+    Risk:
+
+    "dead neurons" if always negative
+    """
+    def __init__(self):
+        super().__init__(relu, relu_prime)
+
+class Softmax(Layers):
+    """
+    Softmax converts logits → probabilities
+
+    p_i = exp(z_i) / sum_j exp(z_j)
+
+    ---
+
+    Properties:
+
+    - 0 <= p_i <= 1
+    - sum_i p_i = 1
+
+    ---
+
+    Numerical stability trick:
+
+    Instead of:
+    exp(z)
+
+    we use:
+    exp(z - max(z))
+
+    to avoid overflow
+
+    ---
+
+    Gradient (full form):
+
+    dp_i/dz_j = p_i * (delta_ij - p_j)
+
+    This is a Jacobian matrix:
+
+    J = diag(p) - p p^T
+
+    ---
+
+    BUT:
+
+    When used with CrossEntropy:
+    we DO NOT compute this Jacobian explicitly
+
+    because:
+
+    dL/dz = p - y  (simplified)
+
+    ---
+
+    Interpretation:
+
+    Softmax spreads probability mass across classes
+    """
+    def forward(self, inputs: Tensor) -> Tensor:
+        self.outputs = softmax(inputs)
+        return self.outputs
+
+    def backward(self, grad: Tensor) -> Tensor:
+        return grad  # simplified (works with CrossEntropy)

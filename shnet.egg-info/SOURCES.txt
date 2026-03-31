@@ -1,0 +1,16 @@
+README.md
+pyproject.toml
+shnet/__init__.py
+shnet/__main__.py
+shnet/data.py
+shnet/layers.py
+shnet/loss.py
+shnet/nn.py
+shnet/optim.py
+shnet/tensor.py
+shnet/train.py
+shnet.egg-info/PKG-INFO
+shnet.egg-info/SOURCES.txt
+shnet.egg-info/dependency_links.txt
+shnet.egg-info/requires.txt
+shnet.egg-info/top_level.txt

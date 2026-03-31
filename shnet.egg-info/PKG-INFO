@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: shnet
+Version: 0.2.5
+Summary: An advanced neural network library built from scratch
+Author: Shhaurya Jaiswal
+License: MIT
+Keywords: deep learning,neural network,machine learning,from scratch
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+
+# shnet
+
+A minimal deep learning library built from scratch.
+
+## Installation
+pip install shnet
+
+## Example
+from shnet import NeuralNet, Linear, Tanh

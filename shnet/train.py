@@ -28,7 +28,7 @@ def train(net: NeuralNet,
 
             grad = loss.grad(predicted, batch.targets)
 
-            net.backwards(grad)
+            net.backward(grad)
 
             optimizer.step(net)
 

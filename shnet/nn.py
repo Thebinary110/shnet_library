@@ -17,7 +17,7 @@ class NeuralNet:
             inputs = layer.forward(inputs)
         return inputs
 
-    def backwards(self, grad:Tensor) -> Tensor:
+    def backward(self, grad:Tensor) -> Tensor:
         for layer in reversed(self.layers):
             grad = layer.backward(grad)
         return grad
