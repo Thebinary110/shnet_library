@@ -27,3 +27,13 @@ class NeuralNet:
             for name, param in layer.params.items():
                 grad = layer.grads[name]
                 yield param, grad
+
+    def predict(self, inputs):
+        outputs = self.forward(inputs)
+
+        ## if batch input
+        if outputs.ndim == 2:
+            return outputs.argmax(axis=1)
+
+        ## single input
+        return outputs.argmax()

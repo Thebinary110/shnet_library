@@ -8,7 +8,7 @@ include = ["shnet*"]
 
 [project]
 name = "shnet"
-version = "0.2.5"
+version = "0.2.6"
 description = "An advanced neural network library built from scratch"
 authors = [{name = "Shhaurya Jaiswal"}]
 readme = "README.md"
